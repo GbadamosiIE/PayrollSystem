@@ -13,7 +13,7 @@ COPY ["PayRollSystem.Application/PayRollSystem.Application.csproj", "PayRollSyst
 COPY ["PayRollSystem.Domain/PayRollSystem.Domain.csproj", "PayRollSystem.Domain/"]
 COPY ["PayRollSystem.Service/PayRollSystem.Service.csproj", "PayRollSystem.Service/"]
 RUN dotnet restore "PayrollSystem/PayRollSystem.Api.csproj"
-COPY . ./
+COPY . .
 WORKDIR "/src/PayrollSystem"
 RUN dotnet build "PayRollSystem.Api.csproj" -c Release -o /app/build
 
@@ -22,5 +22,5 @@ RUN dotnet publish "PayRollSystem.Api.csproj" -c Release -o /app/publish /p:UseA
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "PayRollSystem.Api.dll"]
